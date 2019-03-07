@@ -33,6 +33,11 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 /**
  * Socket.io server
  */
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+
 io.on('connection', function(sock) {
   sock.on('roomChange', (msg) => {
     sock.nickname = msg.user;
