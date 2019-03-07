@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const http = require('http').createServer(app);
+const http = require('http');
 const io = require('socket.io')(http);
 const mongoose = require('mongoose');
 const path = require('path');
@@ -28,7 +28,7 @@ require('./server/api')(app);
 /**
  * Begin listening for requests
  */
-app.listen(port, () => console.log(`Listening on port ${port}`));
+var server = http.createServer(app).listen(port, () => console.log(`Listening on port ${port}`));
 
 /**
  * Socket.io server
@@ -67,4 +67,4 @@ io.on('connection', function(sock) {
     });
   });
 });
-io.listen(http);
+io.listen(server);
