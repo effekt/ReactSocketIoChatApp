@@ -11,9 +11,6 @@ const Log = require('./server/models/log');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'client/build')))
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'))
-})
 
 /**
  * Connect to MongoDB
@@ -24,6 +21,9 @@ mongoose.connect("mongodb+srv://fsUser:5Th8zxE6D7BY96z@cluster0-xjkrx.mongodb.ne
  * Route configuration in ./server/api/index
  */
 require('./server/api')(app);
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'))
+})
 
 /**
  * Begin listening for requests
