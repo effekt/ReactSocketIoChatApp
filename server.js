@@ -4,6 +4,7 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const mongoose = require('mongoose');
+const path = require('path');
 const port = process.env.PORT || 5000;
 const Message = require('./server/models/message');
 const Log = require('./server/models/log');
