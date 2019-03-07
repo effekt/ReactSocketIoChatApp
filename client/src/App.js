@@ -26,42 +26,44 @@ class App extends Component {
   setUsername = (e) => {
     e.preventDefault();
     this.setState({responseToPost: ''});
-    axios.post('/api/user/login', {'name': this.state.username, 'pass': this.state.password})
-    .then((res) => {
-      if (res.data) {
-        this.setState({user: res.data, username: res.data.name, password: '', lastAction: 'login'});
-        socket = socketIOClient(window.location.hostname);
-        socket.on("join", (e) => {
-          let newU = Array.from(new Set(this.state.users.concat([e])));
-          this.state.messages.push({by: null, message: e + ' joined the room.', time: Date.now()})
-          this.setState({users: newU, lastAction: 'join'});
-        });
-        socket.on("leave", (e) => {
-          let u = this.state.users;
-          u.splice(u.indexOf(e), 1);
-          this.state.messages.push({by: null, message: e + ' left the room.', time: Date.now()})
-          this.setState({users: u, lastAction: 'leave'});
-        });
-        socket.on("dc", (e) => {
-          let u = this.state.users;
-          u.splice(u.indexOf(e), 1);
-          this.state.messages.push({by: null, message: e + ' disconnected.', time: Date.now()})
-          this.setState({users: u, lastAction: 'dc'});
-        });
-        socket.on('room', (e) => {
-          let newU = Array.from(new Set(e.users));
-          this.setState({users: newU, messages: e.messages, lastAction: 'room'});
-        });
-        socket.on('message', (e) => {
-          this.state.messages.push(e);
-          this.setState({lastAction: 'message'});
-        });
-        this.changeRoom(this.state.rooms[0]);
-      } else {
-        this.setState({responseToPost: 'Invalid Password.'});
-      }
-    })
-    
+    if (!this.state.username || !this.state.password)
+      this.setState({post: 'Enter both username and password.'});
+    else
+      axios.post('/api/user/login', {'name': this.state.username, 'pass': this.state.password})
+      .then((res) => {
+        if (res.data) {
+          this.setState({user: res.data, username: res.data.name, password: '', lastAction: 'login'});
+          socket = socketIOClient(window.location.hostname);
+          socket.on("join", (e) => {
+            let newU = Array.from(new Set(this.state.users.concat([e])));
+            this.state.messages.push({by: null, message: e + ' joined the room.', time: Date.now()})
+            this.setState({users: newU, lastAction: 'join'});
+          });
+          socket.on("leave", (e) => {
+            let u = this.state.users;
+            u.splice(u.indexOf(e), 1);
+            this.state.messages.push({by: null, message: e + ' left the room.', time: Date.now()})
+            this.setState({users: u, lastAction: 'leave'});
+          });
+          socket.on("dc", (e) => {
+            let u = this.state.users;
+            u.splice(u.indexOf(e), 1);
+            this.state.messages.push({by: null, message: e + ' disconnected.', time: Date.now()})
+            this.setState({users: u, lastAction: 'dc'});
+          });
+          socket.on('room', (e) => {
+            let newU = Array.from(new Set(e.users));
+            this.setState({users: newU, messages: e.messages, lastAction: 'room'});
+          });
+          socket.on('message', (e) => {
+            this.state.messages.push(e);
+            this.setState({lastAction: 'message'});
+          });
+          this.changeRoom(this.state.rooms[0]);
+        } else {
+          this.setState({responseToPost: 'Invalid Password.'});
+        }
+      })
   }
 
   sendSocket = (evt, msg) => {
@@ -127,7 +129,7 @@ class App extends Component {
         </div>
         <div className="chat">
           <div className="title">
-            { this.state.currentRoom ? this.state.currentRoom.name : 'Login to Begin' }
+            { this.state.currentRoom ? this.state.currentRoom.name : 'Login to Begin (Enter Any Username To Create Account)' }
           </div>
           <div className="messages">
             <Scrollbars ref="messageScrollbar">
