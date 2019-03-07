@@ -30,7 +30,7 @@ class App extends Component {
     .then((res) => {
       if (res.data) {
         this.setState({user: res.data, username: res.data.name, password: '', lastAction: 'login'});
-        socket = socketIOClient(window.location.hostname + ":5000");
+        socket = socketIOClient(window.location.hostname);
         socket.on("join", (e) => {
           let newU = Array.from(new Set(this.state.users.concat([e])));
           this.state.messages.push({by: null, message: e + ' joined the room.', time: Date.now()})
@@ -74,24 +74,13 @@ class App extends Component {
   componentDidMount() {
     this.callApi();
   }
+  
   callApi = async () => {
     axios.get('/api/room/get')
     .then((res) => {
       if (res.status === 200)
         this.setState({rooms: res.data})
     });
-  };
-  handleSubmit = async e => {
-    e.preventDefault();
-    const response = await fetch('/api/world', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ post: this.state.post }),
-    });
-    const body = await response.text();
-    this.setState({ responseToPost: body });
   };
 
   changeRoom = (room) => {
