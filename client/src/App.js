@@ -126,9 +126,9 @@ class App extends Component {
               (() => {console.log(this.state.rooms);})()
             }
             {
-              this.state.rooms.map(room => {
+              (() => this.state.rooms.map(room => {
                 return <div className="item" key={room._id} onClick={() => this.changeRoom(room)}>{room.name}</div>
-              })
+              }))()
             }
             
           </Scrollbars>
