@@ -55,9 +55,12 @@ io.on('connection', function(sock) {
     });
   });
 
-  sock.on('disconnect', () => {
+  sock.on('disconnecting', (msg) => {
+    let that = this;
     Log.addLog({by: sock.nickname, log: 'Disconnected: ' + sock.nickname}, (res) => {
-      sock.emit('leave', sock.nickname);
+      for (r of that.rooms) {
+        sock.to(r).emit('dc', sock.nickname);
+      }
     });
   })
 

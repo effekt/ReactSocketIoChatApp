@@ -83,27 +83,13 @@ form {
     justify-content: space-between;
 }
 
-.MuiInput-root-1 {
-    flex-grow: 1;
-    margin: 0px 14px;
-}
-
-.MuiInput-root-1:first-of-type {
-    margin-left: 0;
-}
-
 .active {
     background: rgba(0, 126, 255, 0.5)
 }
 
-.MuiButton-label-32 {
-    margin: 0 14px;
-}
-
-input {
+.input {
     flex-grow: 1;
-    margin: 5px;
-    padding: 8px;
+    margin: 0 5px;
     border-radius: 5px;
 }
 

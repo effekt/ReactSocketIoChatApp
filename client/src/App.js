@@ -30,7 +30,7 @@ class App extends Component {
     .then((res) => {
       if (res.data) {
         this.setState({user: res.data, username: res.data.name, password: '', lastAction: 'login'});
-        socket = socketIOClient(window.location.hostname);
+        socket = socketIOClient(window.location.hostname + ":5000");
         socket.on("join", (e) => {
           let newU = Array.from(new Set(this.state.users.concat([e])));
           this.state.messages.push({by: null, message: e + ' joined the room.', time: Date.now()})
@@ -41,6 +41,12 @@ class App extends Component {
           u.splice(u.indexOf(e), 1);
           this.state.messages.push({by: null, message: e + ' left the room.', time: Date.now()})
           this.setState({users: u, lastAction: 'leave'});
+        });
+        socket.on("dc", (e) => {
+          let u = this.state.users;
+          u.splice(u.indexOf(e), 1);
+          this.state.messages.push({by: null, message: e + ' disconnected.', time: Date.now()})
+          this.setState({users: u, lastAction: 'dc'});
         });
         socket.on('room', (e) => {
           let newU = Array.from(new Set(e.users));
@@ -157,12 +163,16 @@ class App extends Component {
                       value={this.state.username}
                       onChange={e => this.setState({ username: e.target.value })}
                       placeholder="Username"
+                      fullWidth
+                      className="input"
                     />
                     <Input
                       type="password"
                       value={this.state.password}
                       onChange={e => this.setState({ password: e.target.value })}
                       placeholder="Password"
+                      fullWidth
+                      className="input"
                     />
                     <Button variant="contained" type="submit" color="primary">Login</Button>
                   </form>
@@ -177,6 +187,8 @@ class App extends Component {
                       placeholder="Message"
                       id="msgText"
                       name="msgText"
+                      fullWidth
+                      className="input"
                     />
                     <Button variant="contained" type="submit" color="primary">Send</Button>
                   </form>
