@@ -67,4 +67,4 @@ io.on('connection', function(sock) {
     });
   });
 });
-//io.listen(8080);
+io.listen(http);
