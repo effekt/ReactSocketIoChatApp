@@ -18,7 +18,7 @@ messageSchema.statics.addMessage = function(msg, cb) {
 messageSchema.statics.getMessages = function(room, cb) {
     mongoose.model('Message')
     .find({room: room})
-    .sort({time: 'desc'})
+    .sort({time: 'asc'})
     .exec((err, res) => {
         cb(res);
     })
