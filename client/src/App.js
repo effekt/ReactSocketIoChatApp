@@ -30,7 +30,7 @@ class App extends Component {
     .then((res) => {
       if (res.data) {
         this.setState({user: res.data, username: res.data.name, password: '', lastAction: 'login'});
-        socket = socketIOClient("localhost:3001");
+        socket = socketIOClient(window.location.hostname);
         socket.on("join", (e) => {
           let newU = Array.from(new Set(this.state.users.concat([e])));
           this.state.messages.push({by: null, message: e + ' joined the room.', time: Date.now()})
