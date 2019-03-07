@@ -21,9 +21,9 @@ mongoose.connect("mongodb+srv://fsUser:5Th8zxE6D7BY96z@cluster0-xjkrx.mongodb.ne
  * Route configuration in ./server/api/index
  */
 require('./server/api')(app);
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'))
-})
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname + '/client/build/index.html'))
+// })
 
 /**
  * Begin listening for requests
@@ -33,11 +33,6 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 /**
  * Socket.io server
  */
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
-});
-
 io.on('connection', function(sock) {
   sock.on('roomChange', (msg) => {
     sock.nickname = msg.user;
@@ -72,4 +67,4 @@ io.on('connection', function(sock) {
     });
   });
 });
-io.listen(3001);
+//io.listen(8080);
