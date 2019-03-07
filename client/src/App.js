@@ -136,7 +136,7 @@ class App extends Component {
               {
                 this.state.messages.map((message, i) => {
                   if (message.by)
-                    return (<div className="clearfix" key={i}><div className={String(message.by) === String(this.state.username) ? "message-me" : "message"}>{message.message}</div></div>)
+                    return (<div className="clearfix" key={i}><small>message.by</small><br /><div className={String(message.by) === String(this.state.username) ? "message-me" : "message"}>{message.message}</div></div>)
                   else
                     return (<div className="clearfix" key={i}><div className="message-system">{message.message}</div></div>)
                 })
